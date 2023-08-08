@@ -262,13 +262,15 @@ def distributed_init(cfg: FairseqConfig):
                     cfg.distributed_training.distributed_init_method,
                 )
             )
+            timeout_const = 3600
             dist.init_process_group(
                 backend=cfg.distributed_training.distributed_backend,
                 init_method=cfg.distributed_training.distributed_init_method,
                 world_size=cfg.distributed_training.distributed_world_size,
                 rank=cfg.distributed_training.distributed_rank,
-                timeout=datetime.timedelta(seconds=3600)
+                timeout=datetime.timedelta(seconds=timeout_const)
             )
+            logger.info("Timeout: " + str(timeout_const))
             logger.info(
                 "initialized host {} as rank {}".format(
                     socket.gethostname(),
