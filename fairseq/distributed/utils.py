@@ -22,6 +22,7 @@ import torch
 import torch.distributed as dist
 from fairseq.dataclass.configs import DistributedTrainingConfig, FairseqConfig
 from omegaconf import open_dict
+import datetime
 
 try:
     import torch_xla.core.xla_model as xm
@@ -266,6 +267,7 @@ def distributed_init(cfg: FairseqConfig):
                 init_method=cfg.distributed_training.distributed_init_method,
                 world_size=cfg.distributed_training.distributed_world_size,
                 rank=cfg.distributed_training.distributed_rank,
+                timeout=datetime.timedelta(seconds=3600)
             )
             logger.info(
                 "initialized host {} as rank {}".format(
